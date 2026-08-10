@@ -79,28 +79,6 @@ jobs:
           PACKAGE_NAME=$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['name'])")
           echo "PACKAGE_NAME=${PACKAGE_NAME}" >> $GITHUB_ENV
 
-  publish-to-pypi:
-    name: Publish to PyPI
-    needs:
-      - lint
-      - test
-      - build
-      - publish-to-testpypi
-    runs-on: ubuntu-latest
-    environment:
-      name: pypi
-      url: https://pypi.org/p/${{ needs.build.outputs.PACKAGE_NAME }}
-    permissions:
-      id-token: write # IMPORTANT: mandatory for trusted publishing
-    steps:
-      - name: Download all the dists
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
-        with:
-          name: python-package-distributions
-          path: dist/
-      - name: Publish distribution 📦 to PyPI
-        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
-
   github-release:
     name: Publish GitHub Release
     runs-on: ubuntu-latest
@@ -124,6 +102,7 @@ jobs:
           inputs: >-
             ./dist/*.tar.gz
             ./dist/*.whl
+            ./dist/*.metadata
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -146,28 +125,3 @@ jobs:
           gh release upload
           "$GITHUB_REF_NAME" dist/**
           --repo "$GITHUB_REPOSITORY"
-
-  publish-to-testpypi:
-    name: Publish to TestPyPI
-    needs:
-      - build
-    runs-on: ubuntu-latest
-
-    environment:
-      name: testpypi
-      url: https://test.pypi.org/project/${{ needs.build.outputs.PACKAGE_NAME }}
-
-    permissions:
-      id-token: write # IMPORTANT: mandatory for trusted publishing
-
-    steps:
-      - name: Download all the dists
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
-        with:
-          name: python-package-distributions
-          path: dist/
-      - name: Publish distribution 📦 to TestPyPI
-        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
-        with:
-          repository-url: https://test.pypi.org/legacy/
-          skip-existing: true

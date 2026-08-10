@@ -112,6 +112,7 @@ build-docs: build-docs-html
 # build src package and wheel
 build:
     uv build
+    uvx ghr-pypi extract-meta ./dist
 
 # open the html documentation
 [script]
@@ -359,4 +360,4 @@ validate_version VERSION:
 release VERSION: install check-all
     @just validate_version v{{ VERSION }}
     git tag -s v{{ VERSION }} -m "{{ VERSION }} Release"
-    git push https://github.com/django-commons/django-typer.git v{{ VERSION }}
+    git push https://github.com/demoply-org/django-typer.git v{{ VERSION }}
