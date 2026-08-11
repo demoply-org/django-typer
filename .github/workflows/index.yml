@@ -13,3 +13,5 @@ on:
 jobs:
   test:
     uses: demoply-org/.github/.github/workflows/index.yml@main  # zizmor: ignore[unpinned-uses]
+    secrets:
+      INDEX_DISPATCH_TOKEN: ${{ secrets.INDEX_DISPATCH_TOKEN }}

@@ -125,3 +125,11 @@ jobs:
           gh release upload
           "$GITHUB_REF_NAME" dist/**
           --repo "$GITHUB_REPOSITORY"
+
+  index-release:
+    name: Rebuild Package Index
+    needs: github-release
+    permissions: {}
+    uses: demoply-org/.github/.github/workflows/index.yml@main  # zizmor: ignore[unpinned-uses]
+    secrets:
+      INDEX_DISPATCH_TOKEN: ${{ secrets.INDEX_DISPATCH_TOKEN }}
