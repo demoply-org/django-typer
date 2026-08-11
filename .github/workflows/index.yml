@@ -12,4 +12,4 @@ on:
 
 jobs:
   test:
-    uses: demoply-org/workflows/.github/workflows/index.yml@main  # zizmor: ignore[unpinned-uses]
+    uses: demoply-org/.github/.github/workflows/index.yml@main  # zizmor: ignore[unpinned-uses]
