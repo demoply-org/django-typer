@@ -43,7 +43,7 @@ and keep a tight version lock on Typer.
 VERSION = (3, 8, 0)
 
 __title__ = "Django Typer"
-__version__ = "3.8.0+demoply"
+__version__ = "3.8.0.1+demoply"
 __author__ = "Brian Kohan"
 __license__ = "MIT"
 __copyright__ = "Copyright 2023-2026 Brian Kohan"
