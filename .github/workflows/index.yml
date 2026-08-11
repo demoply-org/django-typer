@@ -1,0 +1,15 @@
+name: Index Release
+
+permissions: {}
+
+concurrency:
+  group: index-release
+  cancel-in-progress: true
+
+on:
+  release:
+    types: [published, prereleased, edited, deleted]
+
+jobs:
+  test:
+    uses: demoply-org/workflows/.github/workflows/index.yml@main
