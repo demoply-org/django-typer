@@ -1,17 +1,25 @@
+# send the dispatch even that triggers index.demoply.org to rebuild
 name: Index Release
 
 permissions: {}
 
-concurrency:
-  group: index-release
-  cancel-in-progress: true
-
 on:
+  workflow_call:
+    secrets:
+      INDEX_DISPATCH_TOKEN:
+        required: true
   release:
     types: [published, prereleased, edited, deleted]
 
 jobs:
-  test:
-    uses: demoply-org/.github/.github/workflows/index.yml@main  # zizmor: ignore[unpinned-uses]
-    secrets:
-      INDEX_DISPATCH_TOKEN: ${{ secrets.INDEX_DISPATCH_TOKEN }}
+  send-dispatch:
+    name: Send Dispatch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ask the package index to rebuild
+        env:
+          GH_TOKEN: ${{ secrets.INDEX_DISPATCH_TOKEN }}
+        run: |
+          gh api repos/demoply-org/index/dispatches \
+          -f event_type=ghr-pypi-rebuild \
+          -f "client_payload[repository]=$GITHUB_REPOSITORY"
