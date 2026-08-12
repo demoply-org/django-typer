@@ -130,6 +130,6 @@ jobs:
     name: Rebuild Package Index
     needs: github-release
     permissions: {}
-    uses: ./index.yml  # zizmor: ignore[unpinned-uses]
+    uses: ./.github/workflows/index.yml  # zizmor: ignore[unpinned-uses]
     secrets:
       INDEX_DISPATCH_TOKEN: ${{ secrets.INDEX_DISPATCH_TOKEN }}
